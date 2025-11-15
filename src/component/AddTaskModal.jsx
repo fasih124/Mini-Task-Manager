@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 
-export default function TaskModel({ AddTaskFn }) {
+export default function TaskModel({ AddTaskFn, ref }) {
   const [task, setTask] = useState("");
 
   function handletask(event) {
@@ -13,15 +14,18 @@ export default function TaskModel({ AddTaskFn }) {
     setTask(""); // clear input
   }
 
-  return (
-    <div>
+  return createPortal(
+    <dialog ref={ref}>
       <input
         className="border rounded-br"
         type="text"
         value={task}
         onChange={handletask}
       />
-      <button onClick={addTask}>Add</button>
-    </div>
+      <form method="dialog">
+        <button onClick={addTask}>Add</button>
+      </form>
+    </dialog>,
+    document.getElementById("modal")
   );
 }
